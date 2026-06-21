@@ -17,8 +17,8 @@ namespace Locatic.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,10 +31,10 @@ namespace Locatic.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Telephone = table.Column<string>(type: "TEXT", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,7 +47,7 @@ namespace Locatic.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     BrandId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -67,11 +67,11 @@ namespace Locatic.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Immatriculation = table.Column<string>(type: "TEXT", nullable: false),
+                    RegistrationNumber = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     Year = table.Column<int>(type: "INTEGER", nullable: false),
                     NumberOfPlaces = table.Column<int>(type: "INTEGER", nullable: false),
-                    TarifPerDay = table.Column<decimal>(type: "TEXT", nullable: false),
-                    TypeOfFuel = table.Column<string>(type: "TEXT", nullable: false),
+                    PricePerDay = table.Column<decimal>(type: "TEXT", nullable: false),
+                    FuelType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     ModeleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -91,8 +91,8 @@ namespace Locatic.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DateOfBegin = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateOfEnd = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ClientId = table.Column<int>(type: "INTEGER", nullable: false),
                     CarId = table.Column<int>(type: "INTEGER", nullable: false)
                 },

@@ -1,13 +1,16 @@
+namespace Locatic.Entities;
+
 public class Reservation
 {
     public int Id { get; set; }
-    public DateTime DateOfBegin { get; set; }
-    public DateTime DateOfEnd { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
 
     public int ClientId { get; set; }
-    public required Client Client { get; set; }
+    public Client Client { get; set; } = null!;
 
     public int CarId { get; set; }
-    public required Car Car { get; set; }
-
+    public Car Car { get; set; } = null!;
 }
