@@ -1,0 +1,29 @@
+@model IEnumerable<Locatic.Entities.Client>
+
+<h1>Liste des clients</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un client</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.LastName</td>
+                <td>@client.FirstName</td>
+                <td>@client.Email</td>
+                <td>@client.PhoneNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>
