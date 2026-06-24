@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Services
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IModeleService, ModeleService>();
+builder.Services.AddScoped<ICarService, CarService>();
 
 var app = builder.Build();
 
