@@ -34,7 +34,52 @@ public class ClientController : Controller
         }
 
         await _clientService.CreateAsync(client);
+        return RedirectToAction(nameof(Index));
+    }
 
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var client = await _clientService.GetByIdAsync(id);
+
+        if (client == null)
+        {
+            return NotFound();
+        }
+
+        return View(client);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(Client client)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(client);
+        }
+
+        await _clientService.UpdateAsync(client);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var client = await _clientService.GetByIdAsync(id);
+
+        if (client == null)
+        {
+            return NotFound();
+        }
+
+        return View(client);
+    }
+
+    [HttpPost]
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        await _clientService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }

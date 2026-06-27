@@ -29,4 +29,23 @@ public class ClientService : IClientService
         _context.Clients.Add(client);
         await _context.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(Client client)
+    {
+        _context.Clients.Update(client);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var client = await _context.Clients.FindAsync(id);
+
+        if (client == null)
+        {
+            return;
+        }
+
+        _context.Clients.Remove(client);
+        await _context.SaveChangesAsync();
+    }
 }
