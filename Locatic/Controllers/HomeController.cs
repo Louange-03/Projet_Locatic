@@ -1,21 +1,33 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+using Locatic.Data;
 using Locatic.Models;
+using Locatic.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Locatic.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var dashboard = new DashboardViewModel
+        {
+            BrandCount = await _context.Brands.CountAsync(),
+            ModeleCount = await _context.Modeles.CountAsync(),
+            CarCount = await _context.Cars.CountAsync(),
+            ClientCount = await _context.Clients.CountAsync(),
+            ReservationCount = await _context.Reservations.CountAsync()
+        };
+
+        return View(dashboard);
     }
 
     public IActionResult Privacy()
