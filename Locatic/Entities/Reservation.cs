@@ -21,4 +21,19 @@ public class Reservation
     public int CarId { get; set; }
 
     public Car Car { get; set; } = null!;
+
+    public decimal TotalPrice
+    {
+        get
+        {
+            var days = (EndDate - StartDate).Days;
+
+            if (days <= 0)
+            {
+                days = 1;
+            }
+
+            return days * Car.PricePerDay;
+        }
+    }
 }
