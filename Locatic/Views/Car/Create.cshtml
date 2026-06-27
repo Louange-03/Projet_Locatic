@@ -1,4 +1,4 @@
-@model Locatic.Entities.Car
+@model Locatic.ViewModels.CarViewModel
 
 <h1>Ajouter une voiture</h1>
 
@@ -42,6 +42,10 @@
             <option value="">-- Choisir un modèle --</option>
         </select>
     </div>
+   <div class="mb-3">
+    <label asp-for="ImageFile" class="form-label">Image</label>
+    <input asp-for="ImageFile" type="file" class="form-control" />
+</div>
 
     <button type="submit" class="btn btn-success">
         Enregistrer

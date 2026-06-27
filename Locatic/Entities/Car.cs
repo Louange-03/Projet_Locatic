@@ -28,5 +28,7 @@ public class Car
 
     public Modele Modele { get; set; } = null!;
 
+    public string ImageUrl { get; set; } = string.Empty;
+
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

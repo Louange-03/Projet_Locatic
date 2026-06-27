@@ -13,6 +13,7 @@ public static class DbSeeder
         SeedModeles(context);
         SeedCars(context);
         SeedClients(context);
+        UpdateCarImages(context);
     }
 
     private static void SeedBrands(AppDbContext context)
@@ -70,7 +71,8 @@ public static class DbSeeder
                 NumberOfPlaces = 5,
                 PricePerDay = 45,
                 FuelType = "Essence",
-                ModeleId = clio.Id
+                ModeleId = clio.Id,
+                ImageUrl = "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&h=400&fit=crop"
             },
             new Car
             {
@@ -79,7 +81,8 @@ public static class DbSeeder
                 NumberOfPlaces = 5,
                 PricePerDay = 50,
                 FuelType = "Diesel",
-                ModeleId = peugeot208.Id
+                ModeleId = peugeot208.Id,
+                ImageUrl = "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop"
             },
             new Car
             {
@@ -88,9 +91,30 @@ public static class DbSeeder
                 NumberOfPlaces = 5,
                 PricePerDay = 90,
                 FuelType = "Essence",
-                ModeleId = serie3.Id
+                ModeleId = serie3.Id,
+                ImageUrl = "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop"
             }
         );
+
+        context.SaveChanges();
+    }
+
+    private static void UpdateCarImages(AppDbContext context)
+    {
+        var imageByRegistration = new Dictionary<string, string>
+        {
+            ["AA-123-BB"] = "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&h=400&fit=crop",
+            ["CC-456-DD"] = "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop",
+            ["EE-789-FF"] = "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop"
+        };
+
+        foreach (var car in context.Cars.Where(c => string.IsNullOrWhiteSpace(c.ImageUrl)))
+        {
+            if (imageByRegistration.TryGetValue(car.RegistrationNumber, out var imageUrl))
+            {
+                car.ImageUrl = imageUrl;
+            }
+        }
 
         context.SaveChanges();
     }

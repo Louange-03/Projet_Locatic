@@ -1,33 +1,41 @@
 using System.Diagnostics;
-using Locatic.Data;
 using Locatic.Models;
+using Locatic.Services.Interfaces;
 using Locatic.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Locatic.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly ICarService _carService;
+    private readonly IModeleService _modeleService;
 
-    public HomeController(AppDbContext context)
+    public HomeController(ICarService carService, IModeleService modeleService)
     {
-        _context = context;
+        _carService = carService;
+        _modeleService = modeleService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? modeleId)
     {
-        var dashboard = new DashboardViewModel
+        var cars = (await _carService.GetAllAsync()).ToList();
+        var modeles = (await _modeleService.GetAllAsync()).ToList();
+
+        if (modeleId.HasValue)
         {
-            BrandCount = await _context.Brands.CountAsync(),
-            ModeleCount = await _context.Modeles.CountAsync(),
-            CarCount = await _context.Cars.CountAsync(),
-            ClientCount = await _context.Clients.CountAsync(),
-            ReservationCount = await _context.Reservations.CountAsync()
+            cars = cars.Where(c => c.ModeleId == modeleId.Value).ToList();
+        }
+
+        var viewModel = new LandingViewModel
+        {
+            Cars = cars,
+            Modeles = modeles,
+            SelectedModeleId = modeleId
         };
 
-        return View(dashboard);
+        ViewData["FullWidth"] = true;
+        return View(viewModel);
     }
 
     public IActionResult Privacy()
