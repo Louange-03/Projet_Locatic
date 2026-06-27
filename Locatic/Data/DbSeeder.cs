@@ -1,4 +1,5 @@
 using Locatic.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Locatic.Data;
 
@@ -6,24 +7,60 @@ public static class DbSeeder
 {
     public static void Seed(AppDbContext context)
     {
+        context.Database.Migrate();
+
+        SeedBrands(context);
+        SeedModeles(context);
+        SeedCars(context);
+        SeedClients(context);
+    }
+
+    private static void SeedBrands(AppDbContext context)
+    {
         if (context.Brands.Any())
         {
             return;
         }
 
-        var renault = new Brand { Name = "Renault", Country = "France" };
-        var peugeot = new Brand { Name = "Peugeot", Country = "France" };
-        var bmw = new Brand { Name = "BMW", Country = "Allemagne" };
+        context.Brands.AddRange(
+            new Brand { Name = "Renault", Country = "France" },
+            new Brand { Name = "Peugeot", Country = "France" },
+            new Brand { Name = "BMW", Country = "Allemagne" }
+        );
 
-        context.Brands.AddRange(renault, peugeot, bmw);
         context.SaveChanges();
+    }
 
-        var clio = new Modele { Name = "Clio", BrandId = renault.Id };
-        var peugeot208 = new Modele { Name = "208", BrandId = peugeot.Id };
-        var serie3 = new Modele { Name = "Série 3", BrandId = bmw.Id };
+    private static void SeedModeles(AppDbContext context)
+    {
+        if (context.Modeles.Any())
+        {
+            return;
+        }
 
-        context.Modeles.AddRange(clio, peugeot208, serie3);
+        var renault = context.Brands.FirstOrDefault(b => b.Name == "Renault") ?? context.Brands.First();
+        var peugeot = context.Brands.FirstOrDefault(b => b.Name == "Peugeot") ?? context.Brands.First();
+        var bmw = context.Brands.FirstOrDefault(b => b.Name == "BMW") ?? context.Brands.First();
+
+        context.Modeles.AddRange(
+            new Modele { Name = "Clio", BrandId = renault.Id },
+            new Modele { Name = "208", BrandId = peugeot.Id },
+            new Modele { Name = "Série 3", BrandId = bmw.Id }
+        );
+
         context.SaveChanges();
+    }
+
+    private static void SeedCars(AppDbContext context)
+    {
+        if (context.Cars.Any())
+        {
+            return;
+        }
+
+        var clio = context.Modeles.FirstOrDefault(m => m.Name == "Clio") ?? context.Modeles.First();
+        var peugeot208 = context.Modeles.FirstOrDefault(m => m.Name == "208") ?? context.Modeles.First();
+        var serie3 = context.Modeles.FirstOrDefault(m => m.Name == "Série 3") ?? context.Modeles.First();
 
         context.Cars.AddRange(
             new Car
@@ -54,6 +91,16 @@ public static class DbSeeder
                 ModeleId = serie3.Id
             }
         );
+
+        context.SaveChanges();
+    }
+
+    private static void SeedClients(AppDbContext context)
+    {
+        if (context.Clients.Any())
+        {
+            return;
+        }
 
         context.Clients.AddRange(
             new Client
