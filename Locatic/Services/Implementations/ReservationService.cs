@@ -29,4 +29,15 @@ public class ReservationService : IReservationService
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> IsCarAvailableAsync(int carId, DateTime startDate, DateTime endDate)
+    {
+        var hasConflict = await _context.Reservations.AnyAsync(r =>
+            r.CarId == carId &&
+            startDate <= r.EndDate &&
+            endDate >= r.StartDate
+        );
+
+        return !hasConflict;
+    }
 }

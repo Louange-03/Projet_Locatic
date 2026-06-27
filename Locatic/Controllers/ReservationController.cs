@@ -42,6 +42,17 @@ public class ReservationController : Controller
             ModelState.AddModelError("", "La date de fin doit être après la date de début.");
         }
 
+        var isAvailable = await _reservationService.IsCarAvailableAsync(
+            reservation.CarId,
+            reservation.StartDate,
+            reservation.EndDate
+        );
+
+        if (!isAvailable)
+        {
+            ModelState.AddModelError("", "Cette voiture est déjà réservée sur cette période.");
+        }
+
         if (!ModelState.IsValid)
         {
             await LoadFormLists();
@@ -49,7 +60,6 @@ public class ReservationController : Controller
         }
 
         await _reservationService.CreateAsync(reservation);
-
         return RedirectToAction(nameof(Index));
     }
 
