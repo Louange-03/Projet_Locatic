@@ -32,8 +32,8 @@
                 <td>@car.NumberOfPlaces</td>
                 <td>@car.PricePerDay €</td>
                 <td>@car.FuelType</td>
-                <td>@car.Modele.Name</td>
-                <td>@car.Modele.Brand.Name</td>
+                <td>@(car.Modele?.Name ?? "N/A")</td>
+                <td>@(car.Modele?.Brand?.Name ?? "N/A")</td>
                 <td>@car.ImageUrl</td>
 
                 <td>

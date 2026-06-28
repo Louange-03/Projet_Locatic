@@ -1,263 +1,152 @@
-<<<<<<< HEAD
-# Locatic
+# LOCATIC
 
-Projet ASP.NET Core MVC de gestion d'une agence de location de voitures.
+Application web de gestion d'une agence de location de voitures developpee avec ASP.NET Core MVC et Entity Framework Core.
 
-## Technologies
+## 1. Presentation du projet
 
+Locatic permet de gerer les elements metier principaux d'une agence de location :
+- Marques
+- Modeles
+- Voitures
+- Clients
+- Reservations
+
+Le projet suit une architecture claire (MVC + Services) avec persistance SQLite.
+
+## 2. Technologies utilisees
+
+- .NET 8
 - ASP.NET Core MVC
-- Entity Framework Core
-- SQLite
-- Razor Views
-
-## Membres
-
-- Esso 
-- Gires
-=======
-# 🚗 Locatic
-
-Locatic est une application web développée en ASP.NET Core MVC permettant la gestion d'une agence de location de voitures.
-
-Le projet permet de gérer :
-
-- Les marques de véhicules
-- Les modèles de véhicules
-- Le parc automobile
-- Les clients
-- Les réservations
-
-Les données sont persistées dans une base SQLite via Entity Framework Core.
-
----
-
-#  Membres du binôme
-
-- Esso Mawaki ASSIAH
-- Gires TIENTCHEU
-
----
-
-#  Technologies utilisées
-
-- ASP.NET Core MVC (.NET 8)
-- Entity Framework Core
+- Entity Framework Core 8
 - SQLite
 - Razor Views
 - Bootstrap 5
-- Git / GitHub
 
----
+## 3. Structure du projet
 
-#  Architecture du projet
+Le code applicatif est dans le dossier Locatic :
 
-```txt
-Locatic
-│
-├── Controllers
-├── Data
-├── Entities
-├── Migrations
-├── Services
-│   ├── Interfaces
-│   └── Implementations
-├── ViewModels
-├── Views
-├── wwwroot
-│
-└── Program.cs
+- Controllers : endpoints MVC et orchestration des actions
+- Entities : classes metier et relations
+- Data : AppDbContext, migrations, seeding
+- Services/Interfaces : contrats metier
+- Services/Implementations : logique metier
+- ViewModels : modeles utilises par les vues
+- Views : pages Razor
+- wwwroot : ressources statiques (css, js, images)
+
+## 4. Modele de donnees (relations)
+
+- Brand 1 -> n Modele
+- Modele 1 -> n Car
+- Client 1 -> n Reservation
+- Car 1 -> n Reservation
+
+## 5. Prerequis
+
+- SDK .NET 8 installe
+- Outil EF Core CLI installe (dotnet-ef)
+
+Installation de dotnet-ef (si necessaire) :
+
+```bash
+dotnet tool install --global dotnet-ef --version 8.0.11
 ```
 
-Le projet suit une architecture en couches :
+## 6. Installation et lancement (etapes completes)
 
-- Entités métier
-- Accès aux données (EF Core)
-- Services métier
-- Contrôleurs MVC
-- Vues Razor
-
-Les contrôleurs restent légers et délèguent la logique métier aux services.
-
----
-
-#  Modèle de données
-
-```txt
-Brand
-  │
-  └───< Modele
-            │
-            └───< Car
-                       │
-                       └───< Reservation >─── Client
-```
-
-Relations :
-
-- Une marque possède plusieurs modèles.
-- Un modèle appartient à une seule marque.
-- Un modèle possède plusieurs voitures.
-- Une voiture appartient à un seul modèle.
-- Un client possède plusieurs réservations.
-- Une réservation concerne une seule voiture.
-- Une réservation concerne un seul client.
-
----
-
-#  Fonctionnalités réalisées
-
-## Marques
-
-- Création d'une marque
-- Liste des marques
-
-## Modèles
-
-- Création d'un modèle
-- Association à une marque existante
-- Liste des modèles
-
-## Voitures
-
-- Création d'une voiture
-- Association à un modèle existant
-- Liste des voitures
-- Consultation du détail d'une voiture
-
-## Clients
-
-- Création d'un client
-- Liste des clients
-
-## Réservations
-
-- Création d'une réservation
-- Liste des réservations
-
----
-
-#  Fonctionnalités en cours
-
-- Validation avancée des formulaires
-- CRUD complet des voitures
-- Gestion de la disponibilité des véhicules
-- Amélioration de la règle métier des réservations
-- Tableau de bord
-- Seed de données
-
----
-
-#  Installation
-
-## 1. Cloner le projet
+1. Cloner le depot :
 
 ```bash
 git clone https://github.com/Louange-03/Projet_Locatic.git
 ```
 
+2. Se placer dans le projet web :
+
 ```bash
-cd Projet_Locatic
+cd Projet_Locatic/Locatic
 ```
 
----
-
-## 2. Restaurer les dépendances
+3. Restaurer les dependances :
 
 ```bash
 dotnet restore
 ```
 
----
-
-## 3. Appliquer les migrations
-
-```bash
-cd Locatic
-```
+4. Appliquer les migrations sur la base SQLite :
 
 ```bash
 dotnet ef database update
 ```
 
----
-
-## 4. Lancer l'application
-
-```bash
-dotnet run
-```
-
-L'application est ensuite disponible à l'adresse :
-
-```txt
-http://localhost:5286
-```
-
----
-
-#  Commandes utiles
-
-Créer une migration :
-
-```bash
-dotnet ef migrations add NomMigration
-```
-
-Mettre à jour la base :
-
-```bash
-dotnet ef database update
-```
-
-Compiler le projet :
+5. Compiler le projet :
 
 ```bash
 dotnet build
 ```
 
----
+6. Lancer l'application :
 
-#  Convention Git
-
-## Branches principales
-
-```txt
-main
-develop
+```bash
+dotnet run
 ```
 
-## Branches de travail
+Adresse locale (selon votre environnement) :
 
 ```txt
-feature/project-setup
-feature/entities
-feature/database-cleanup
+http://localhost:5286
 ```
 
-Chaque fonctionnalité est développée sur une branche dédiée puis fusionnée dans `develop`.
+## 7. Commandes utiles
 
-Une fois validée, elle est intégrée dans `main`.
+Creer une migration :
 
----
+```bash
+dotnet ef migrations add NomMigration
+```
 
-#  État actuel du projet
+Mettre a jour la base :
+
+```bash
+dotnet ef database update
+```
+
+Supprimer la derniere migration :
+
+```bash
+dotnet ef migrations remove
+```
+
+Compiler :
+
+```bash
+dotnet build
+```
+
+## 8. Configuration
+
+La chaine de connexion SQLite est configuree dans :
+- Locatic/appsettings.json
+- Locatic/appsettings.Development.json
+
+Valeur par defaut :
 
 ```txt
-✔ Architecture MVC
-✔ SQLite
-✔ Entity Framework Core
-✔ Services métier
-✔ Injection de dépendances
-✔ Gestion des marques
-✔ Gestion des modèles
-✔ Gestion des voitures
-✔ Gestion des clients
-✔ Gestion des réservations
-
-Prochaine étape :
-→ Validation métier
-→ CRUD complet
-→ Disponibilité des véhicules
-→ Dashboard
+Data Source=agence.db
 ```
->>>>>>> review-gires-latest
+
+## 9. Initialisation des donnees
+
+Au demarrage, un seeding est execute pour inserer des donnees de base si elles n'existent pas encore (marques, modeles, voitures, clients).
+
+## 10. Bonnes pratiques Git
+
+- Travailler sur la branche develop
+- Verifier que le projet build avant push
+- Fusionner sur main seulement apres validation finale
+- Ne pas versionner les fichiers de base locale et temporaires SQLite
+
+## 11. Auteurs
+
+- Esso Mawaki ASSIAH
+- Gires TIENTCHEU

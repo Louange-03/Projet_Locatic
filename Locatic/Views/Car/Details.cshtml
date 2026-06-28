@@ -32,12 +32,12 @@
 
         <p>
             <strong>Modèle :</strong>
-            @Model.Modele.Name
+            @(Model.Modele?.Name ?? "N/A")
         </p>
 
         <p>
             <strong>Marque :</strong>
-            @Model.Modele.Brand.Name
+            @(Model.Modele?.Brand?.Name ?? "N/A")
         </p>
 
         <p>
