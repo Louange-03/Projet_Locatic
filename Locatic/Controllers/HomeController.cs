@@ -17,21 +17,31 @@ public class HomeController : Controller
         _modeleService = modeleService;
     }
 
-    public async Task<IActionResult> Index(int? modeleId)
+    public async Task<IActionResult> Index(int? modeleId, int? places)
     {
-        var cars = (await _carService.GetAllAsync()).ToList();
+        var allCars = (await _carService.GetAllAsync()).ToList();
         var modeles = (await _modeleService.GetAllAsync()).ToList();
+        var availablePlaces = allCars.Select(c => c.NumberOfPlaces).Distinct().OrderBy(p => p).ToList();
+
+        var cars = allCars.AsEnumerable();
 
         if (modeleId.HasValue)
         {
-            cars = cars.Where(c => c.ModeleId == modeleId.Value).ToList();
+            cars = cars.Where(c => c.ModeleId == modeleId.Value);
+        }
+
+        if (places.HasValue)
+        {
+            cars = cars.Where(c => c.NumberOfPlaces == places.Value);
         }
 
         var viewModel = new LandingViewModel
         {
-            Cars = cars,
+            Cars = cars.ToList(),
             Modeles = modeles,
-            SelectedModeleId = modeleId
+            AvailablePlaces = availablePlaces,
+            SelectedModeleId = modeleId,
+            SelectedPlaces = places
         };
 
         ViewData["FullWidth"] = true;

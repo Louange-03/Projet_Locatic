@@ -21,28 +21,58 @@
     <div class="container">
         <div class="section-header">
             <h2>Nos véhicules disponibles</h2>
-            <p>Filtrez par modèle pour trouver rapidement la voiture qui vous convient.</p>
+            <p>Filtrez par modèle ou par nombre de places pour trouver la voiture idéale.</p>
         </div>
 
-        <div class="filter-pills">
-            <a asp-action="Index"
-               class="filter-pill @(Model.SelectedModeleId == null ? "active" : "")">
-                Tous les modèles
-            </a>
-            @foreach (var modele in Model.Modeles)
-            {
+        <div class="filter-group">
+            <span class="filter-label">Modèle</span>
+            <div class="filter-pills">
                 <a asp-action="Index"
-                   asp-route-modeleId="@modele.Id"
-                   class="filter-pill @(Model.SelectedModeleId == modele.Id ? "active" : "")">
-                    @modele.Brand.Name @modele.Name
+                   asp-route-places="@Model.SelectedPlaces"
+                   class="filter-pill @(Model.SelectedModeleId == null ? "active" : "")">
+                    Tous
                 </a>
-            }
+                @foreach (var modele in Model.Modeles)
+                {
+                    <a asp-action="Index"
+                       asp-route-modeleId="@modele.Id"
+                       asp-route-places="@Model.SelectedPlaces"
+                       class="filter-pill @(Model.SelectedModeleId == modele.Id ? "active" : "")">
+                        @modele.Brand.Name @modele.Name
+                    </a>
+                }
+            </div>
         </div>
+
+        @if (Model.AvailablePlaces.Any())
+        {
+            <div class="filter-group">
+                <span class="filter-label">Nombre de places</span>
+                <div class="filter-pills">
+                    <a asp-action="Index"
+                       asp-route-modeleId="@Model.SelectedModeleId"
+                       class="filter-pill @(Model.SelectedPlaces == null ? "active" : "")">
+                        Toutes
+                    </a>
+                    @foreach (var placeCount in Model.AvailablePlaces)
+                    {
+                        <a asp-action="Index"
+                           asp-route-modeleId="@Model.SelectedModeleId"
+                           asp-route-places="@placeCount"
+                           class="filter-pill @(Model.SelectedPlaces == placeCount ? "active" : "")">
+                            @placeCount places
+                        </a>
+                    }
+                </div>
+            </div>
+        }
 
         @if (!Model.Cars.Any())
         {
             <div class="empty-state">
-                <div class="empty-icon">🚗</div>
+                <div class="empty-icon">
+                    <img src="~/images/logo.svg" alt="" class="empty-logo" />
+                </div>
                 <h3>Aucun véhicule trouvé</h3>
                 <p>Essayez un autre modèle ou revenez plus tard.</p>
                 <a asp-action="Index" class="btn btn-outline-primary">Voir tous les véhicules</a>
@@ -66,9 +96,9 @@
                             <div class="car-card-brand">@car.Modele.Brand.Name</div>
                             <h3 class="car-card-title">@car.Modele.Name</h3>
                             <div class="car-card-specs">
-                                <span>📅 @car.Year</span>
-                                <span>⛽ @car.FuelType</span>
-                                <span>👥 @car.NumberOfPlaces places</span>
+                                <span class="spec-tag">@car.Year</span>
+                                <span class="spec-tag">@car.FuelType</span>
+                                <span class="spec-tag">@car.NumberOfPlaces places</span>
                             </div>
                             <a asp-controller="Reservation"
                                asp-action="Book"

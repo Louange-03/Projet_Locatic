@@ -2,7 +2,7 @@
 
 <h1>Modifier une voiture</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
 
     <input type="hidden" asp-for="Id" />
 
@@ -42,6 +42,19 @@
             <option value="">-- Choisir un modèle --</option>
         </select>
         <span asp-validation-for="ModeleId" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <div class="mb-3">
+            <label class="form-label">Image actuelle</label>
+            <img src="@Model.ImageUrl" alt="Voiture" class="img-fluid rounded" style="max-height: 200px;" />
+        </div>
+    }
+
+    <div class="mb-3">
+        <label asp-for="ImageFile" class="form-label">Nouvelle image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
     </div>
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
